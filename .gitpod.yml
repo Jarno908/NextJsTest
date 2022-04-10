@@ -1,5 +1,6 @@
 tasks:
   - init: |
+      yarn install
       docker-compose pull
   - command: |
       docker-compose up --build
