@@ -1,7 +1,9 @@
 import { NextApiHandler } from 'next';
-import NextAuth from 'next-auth';
+import NextAuth, { SessionStrategy } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import CredentialsProvider from "next-auth/providers/credentials";
+import { JWT } from 'next-auth/jwt';
+import jwt from 'jsonwebtoken';
 import prisma from '../../../lib/prisma';
 import { getCookie } from 'cookies-next';
 
@@ -34,13 +36,33 @@ const authHandler: NextApiHandler = (req, res) => {
             
                     // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                   }
-                }
+                },
             })
         ],
+        session: {
+          strategy: "jwt" as SessionStrategy,
+        },
+        jwt: {
+          async encode(params: {
+            token: JWT
+            secret: string
+            maxAge: number
+          }): Promise<string> {
+            // return a custom encoded JWT string
+            return jwt.sign(params.token, params.secret);
+          },
+          async decode(params: {
+            token: string
+            secret: string
+          }): Promise<JWT | null> {
+            // return a `JWT` object, or `null` if decoding failed
+            return jwt.verify(params.token, params.secret) as JWT;
+          },
+        },
         adapter: PrismaAdapter(prisma),
-        // pages: {
-        //     signIn: "/auth/signin"
-        // },
+        pages: {
+            signIn: "/auth/signin"
+        },
         theme: {
             colorScheme: colorScheme as "auto" | "dark" | "light",
             logo: "https://www.reggegroep.nl/images/logo/Reggegroep_tweeluik_plaatsnamen_horizontaal.png",

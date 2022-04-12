@@ -20,9 +20,8 @@ services:
       - 3000:3000
     environment:
       DB_CONNECTIONSTRING: "postgres://example_user:example_password@db:5432/inventory_management"
-      NEXTAUTH_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/api/auth"
-      # NEXTAUTH_URL: "localhost:3000"
-      NEXTAUTH_URL_INTERNAL: "localhost:3000/api/auth"
+      NEXTAUTH_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}/api/auth" # For use with Gitpod. Otherwise use `http://localhost:3000/api/auth` for development on local machine.
+      NEXTAUTH_URL_INTERNAL: "http://localhost:3000/api/auth"
       NEXTAUTH_SECRET: "XRHdKuPodU2FiNRKZJ6ipcRag9KM4PwRwuj6k45BVdA="
   
   db:
