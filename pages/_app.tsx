@@ -16,13 +16,13 @@ const MyApp = (props: AppProps & { colorScheme: ColorScheme, pathName: string })
 
   return (
     <SessionProvider session={session}>
-      <Auth pathName={props.pathName}>
+      {/* <Auth pathName={props.pathName}> */}
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS >
             <Component {...pageProps} />
           </MantineProvider>
         </ColorSchemeProvider>
-      </Auth>
+      {/* </Auth> */}
     </SessionProvider>
   );
 };

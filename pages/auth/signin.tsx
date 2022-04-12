@@ -1,30 +1,26 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { getProviders, signIn } from "next-auth/react"
-import type { AppProvider } from "next-auth/providers"
+import { getCsrfToken } from "next-auth/react"
 
-type Props = {
-    providers: AppProvider;
-  };
-
-const SignIn = ({ providers }:InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export default function SignIn({ csrfToken }) {
   return (
-    <>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </button>
-        </div>
-      ))}
-    </>
+    <form method="post" action="/api/auth/callback/credentials">
+      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+      <label>
+        Username
+        <input name="username" type="text" />
+      </label>
+      <label>
+        Password
+        <input name="password" type="password" />
+      </label>
+      <button type="submit">Sign in</button>
+    </form>
   )
 }
 
-export async function getServerSideProps() {
-    const providers = await getProviders()
-    return {
-        props: { providers },
-    }
-};
-
-export default SignIn;
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  }
+}
