@@ -11,3 +11,4 @@ ports:
 vscode:
   extensions:
     - ms-azuretools.vscode-docker
+    - bajdzis.vscode-database
