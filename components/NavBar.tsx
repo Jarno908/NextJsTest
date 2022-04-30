@@ -130,7 +130,7 @@ const NavBar: React.FC = () => {
           <p>
             {session.user.name} ({session.user.email})
           </p>
-          {createLink("/api/auth/signout", "Log out")}
+          {createLink("/auth/signout", "Log out")}
         </Group>
       )
     } else if(status === "loading") {

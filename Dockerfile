@@ -19,6 +19,7 @@ COPY . .
 # For deploying locally in Development environment
 FROM base AS development
 EXPOSE 3000
+ENV NODE_ENV development
 ENV PORT 3000
 
 CMD ["/bin/sh", "-c" ,"yarn prisma migrate dev && yarn dev"]

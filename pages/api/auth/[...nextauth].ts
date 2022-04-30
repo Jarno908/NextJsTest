@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
 import KeycloakProvider from "next-auth/providers/keycloak";
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { CustomPrismaAdapter } from '../../../nextauth/custom-prisma-adapter';
 import prisma from '../../../lib/prisma';
 import { getCookie } from 'cookies-next';
@@ -20,7 +19,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     ],
     adapter: CustomPrismaAdapter(prisma),
     pages: {
-        signIn: "/auth/signin"
+        signIn: "/auth/signin",
+        signOut: "/auth/signout",
+        error: "/auth/error"
     },
     callbacks: {
       async redirect({ url, baseUrl }) {
@@ -29,7 +30,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     },
     theme: {
         colorScheme: colorScheme as "auto" | "dark" | "light",
-        logo: "https://www.reggegroep.nl/images/logo/Reggegroep_tweeluik_plaatsnamen_horizontaal.png",
     }
   })
 }
